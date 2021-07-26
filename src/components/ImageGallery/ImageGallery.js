@@ -25,13 +25,7 @@ export default class ImageGallery extends Component {
       imageApiService
         .fetchImagesApi()
         .then(image => {
-          if (image.length !== 0) {
-            this.setState({
-              images: image,
-              status: 'resolved',
-              loading: true,
-            });
-          } else {
+          if (image.length === 0) {
             toast.warning(
               `Sorry for your request ${this.props.imageName}, no results were found.`,
               {
@@ -48,8 +42,13 @@ export default class ImageGallery extends Component {
               loading: true,
               status: 'rejected',
             });
-            // return;
-            //
+            return;
+          } else {
+            this.setState({
+              images: image,
+              status: 'resolved',
+              loading: true,
+            });
           }
         })
         .catch(error => {
@@ -108,6 +107,7 @@ export default class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
+      imageApiService.resetPage();
       return (
         <h2
           style={{
