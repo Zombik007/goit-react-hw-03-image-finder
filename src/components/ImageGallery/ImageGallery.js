@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+
 import styles from './ImageGallery.module.css';
 import ImageGalleryItem from '../ImageGalleryItem';
 import ImagesApiService from '../../services/apiService';
@@ -23,11 +25,32 @@ export default class ImageGallery extends Component {
       imageApiService
         .fetchImagesApi()
         .then(image => {
-          this.setState({
-            images: image,
-            status: 'resolved',
-            loading: true,
-          });
+          if (image.length !== 0) {
+            this.setState({
+              images: image,
+              status: 'resolved',
+              loading: true,
+            });
+          } else {
+            toast.warning(
+              `Sorry for your request ${this.props.imageName}, no results were found.`,
+              {
+                position: 'top-right',
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              },
+            );
+            this.setState({
+              error: `Sorry for your request ${this.props.imageName}, no results were found.`,
+              loading: true,
+              status: 'rejected',
+            });
+            // return;
+            //
+          }
         })
         .catch(error => {
           this.setState({ error, status: 'rejected' });
@@ -63,6 +86,7 @@ export default class ImageGallery extends Component {
         <div
           style={{
             textAlign: 'center',
+            fontSize: '18px',
           }}
         >
           Enter what picture you want to find
@@ -84,7 +108,15 @@ export default class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
-      return <h2>{error.message}</h2>;
+      return (
+        <h2
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          {error}
+        </h2>
+      );
     }
 
     if (status === 'resolved') {
