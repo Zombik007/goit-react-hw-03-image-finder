@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import styles from './ImageGalleryItem.module.css';
 
 export default class ImageGalleryItem extends Component {
+  static propTypes = {
+    image: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        webformatURL: PropTypes.string.isRequired,
+        largeImageURL: PropTypes.string.isRequired,
+        tags: PropTypes.string.isRequired,
+      }).isRequired,
+    ).isRequired,
+    openModal: PropTypes.func.isRequired,
+    modalContent: PropTypes.func.isRequired,
+  };
+
   onImageClick = e => {
     this.props.modalContent(e.target.dataset.url, e.target.alt);
     this.props.openModal();

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { toast } from 'react-toastify';
 
 import styles from './ImageGallery.module.css';
@@ -10,6 +12,12 @@ import Loader from '../Loader';
 const imageApiService = new ImagesApiService();
 
 export default class ImageGallery extends Component {
+  static propTypes = {
+    openModal: PropTypes.func.isRequired,
+    modalContent: PropTypes.func.isRequired,
+    imageName: PropTypes.string.isRequired,
+  };
+
   state = {
     images: null,
     error: null,

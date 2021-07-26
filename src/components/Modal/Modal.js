@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { createPortal } from 'react-dom';
 
 import styles from './Modal.module.css';
@@ -6,6 +8,12 @@ import styles from './Modal.module.css';
 const lightboxRoot = document.querySelector('#lightbox-root');
 
 export default class Lightbox extends Component {
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    modalContent: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
